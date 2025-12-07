@@ -13,23 +13,23 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://daiostea.ro"),
   title: {
-    default: "daiostea.ro - Recenzii Transport România | Verifică Furnizori",
+    default: "daiostea.ro - Recenzii Firme și PFA România | Verifică Afaceri",
     template: "%s | daiostea.ro"
   },
-  description: "Platformă de recenzii pentru servicii de transport în România. Verifică, evaluează și compară furnizori de transport. Citește recenzii reale de la clienți.",
+  description: "Platformă de recenzii pentru firme, PFA-uri și afaceri din România. Verifică, evaluează și compară companii. Citește recenzii reale de la clienți.",
   keywords: [
-    "recenzii transport",
-    "transport România",
-    "furnizori transport",
-    "firme transport",
-    "rating transport",
-    "pareri transport",
-    "transport marfa",
-    "curierat România",
-    "mutari mobila",
-    "transport colete",
+    "recenzii firme",
+    "recenzii companii România",
+    "recenzii PFA",
+    "pareri firme",
+    "rating companii",
+    "review afaceri",
+    "verificare firme România",
+    "evaluare companii",
     "daiostea",
-    "review transport"
+    "recenzii servicii",
+    "firme de încredere",
+    "PFA România"
   ],
   authors: [{ name: "daiostea.ro" }],
   creator: "daiostea.ro",
@@ -50,8 +50,8 @@ export const metadata: Metadata = {
     locale: "ro_RO",
     url: "https://daiostea.ro",
     siteName: "daiostea.ro",
-    title: "daiostea.ro - Recenzii Transport România",
-    description: "Platformă de recenzii pentru servicii de transport în România. Verifică, evaluează și compară furnizori de transport.",
+    title: "daiostea.ro - Recenzii Firme și PFA România",
+    description: "Platformă de recenzii pentru firme, PFA-uri și afaceri din România. Verifică, evaluează și compară companii.",
     images: [
       {
         url: "/logo.png",
@@ -63,14 +63,14 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "daiostea.ro - Recenzii Transport România",
-    description: "Platformă de recenzii pentru servicii de transport în România",
+    title: "daiostea.ro - Recenzii Firme și PFA România",
+    description: "Platformă de recenzii pentru firme, PFA-uri și afaceri din România",
     images: ["/logo.png"],
   },
   alternates: {
     canonical: "https://daiostea.ro",
   },
-  category: "transport",
+  category: "business",
 };
 
 export default function RootLayout({
@@ -86,7 +86,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#06b6d4" />
         <meta name="google-site-verification" content="" />
       </head>
-      <body className={`${inter.variable} antialiased bg-slate-50 dark:bg-slate-900 min-h-screen`}>
+      <body className={`${inter.variable} antialiased bg-slate-950 min-h-screen`}>
         <ThemeProvider>
           <AuthProvider>
             <Header />

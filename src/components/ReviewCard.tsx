@@ -28,34 +28,39 @@ export default function ReviewCard({ review }: ReviewCardProps) {
 
   return (
     <div 
-      className="group relative bg-white dark:bg-slate-800 rounded-2xl p-6 card-animate overflow-hidden"
+      className="group relative bg-slate-800/50 backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-6 border border-white/10 overflow-hidden transition-all hover:border-white/20"
       style={{ 
-        boxShadow: `0 4px 20px -4px ${ratingColor}40`,
-        borderLeft: `4px solid ${ratingColor}`
+        boxShadow: `0 4px 30px -4px ${ratingColor}20`,
       }}
     >
+      {/* Left border accent */}
+      <div 
+        className="absolute top-0 left-0 w-1 h-full rounded-l-xl md:rounded-l-2xl"
+        style={{ background: `linear-gradient(180deg, ${ratingColor}, ${ratingColor}50)` }}
+      />
+      
       {/* Decorative gradient */}
       <div 
-        className="absolute top-0 right-0 w-24 h-24 rounded-bl-full opacity-10 group-hover:opacity-20 transition-opacity"
+        className="absolute top-0 right-0 w-24 md:w-32 h-24 md:h-32 rounded-bl-full opacity-10 group-hover:opacity-20 transition-opacity"
         style={{ background: `linear-gradient(135deg, ${ratingColor}, transparent)` }}
       />
 
       <div className="relative">
         {/* Header with name and rating */}
-        <div className="flex items-start justify-between mb-4">
+        <div className="flex items-start justify-between mb-3 md:mb-4">
           <div>
-            <h4 className="text-lg font-bold text-slate-800 dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
+            <h4 className="text-base md:text-lg font-bold text-white group-hover:text-sky-400 transition-colors">
               {review.nume_furnizor || 'Anonim'}
             </h4>
             <span 
-              className="inline-block mt-1 px-2 py-0.5 rounded-full text-xs font-medium"
-              style={{ backgroundColor: `${ratingColor}20`, color: ratingColor }}
+              className="inline-block mt-1 px-2.5 py-1 rounded-full text-xs font-medium border"
+              style={{ backgroundColor: `${ratingColor}15`, color: ratingColor, borderColor: `${ratingColor}30` }}
             >
               {ratingLabel}
             </span>
           </div>
           <div 
-            className="text-2xl font-bold"
+            className="text-xl md:text-2xl font-black"
             style={{ color: ratingColor }}
           >
             {review.rating.toFixed(1)}
@@ -63,15 +68,15 @@ export default function ReviewCard({ review }: ReviewCardProps) {
         </div>
         
         {/* Stars */}
-        <div className="flex items-center gap-0.5 mb-4">
+        <div className="flex items-center gap-0.5 md:gap-1 mb-3 md:mb-4">
           {stars.map((_, index) => (
             <Image
               key={index}
               src={`/icons/${iconName}`}
               alt="star"
-              width={20}
-              height={20}
-              className="transition-transform group-hover:scale-110"
+              width={18}
+              height={18}
+              className="w-4 h-4 md:w-5 md:h-5 transition-transform group-hover:scale-110"
               style={{ transitionDelay: `${index * 50}ms` }}
             />
           ))}
@@ -80,28 +85,31 @@ export default function ReviewCard({ review }: ReviewCardProps) {
               key={`empty-${index}`}
               src="/icons/ico-gray.png"
               alt="empty star"
-              width={20}
-              height={20}
-              className="opacity-30"
+              width={18}
+              height={18}
+              className="w-4 h-4 md:w-5 md:h-5 opacity-30"
             />
           ))}
         </div>
 
         {/* Review text */}
-        <p className="text-slate-600 dark:text-slate-300 mb-4 leading-relaxed line-clamp-3">
+        <p className="text-sm md:text-base text-slate-300 mb-3 md:mb-4 leading-relaxed line-clamp-3">
           &ldquo;{review.mesaj}&rdquo;
         </p>
 
         {/* Footer */}
-        <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-700">
-          <div className="flex items-center gap-2 text-sm text-slate-400 dark:text-slate-500">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="flex items-center justify-between pt-3 md:pt-4 border-t border-white/10">
+          <div className="flex items-center gap-2 text-xs md:text-sm text-slate-500">
+            <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
             {formattedDate}
           </div>
-          <button className="text-sm text-sky-500 hover:text-sky-600 dark:text-sky-400 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-            Vezi profil →
+          <button className="text-xs md:text-sm text-sky-400 hover:text-sky-300 font-medium md:opacity-0 md:group-hover:opacity-100 transition-opacity flex items-center gap-1">
+            Vezi profil
+            <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
           </button>
         </div>
       </div>
