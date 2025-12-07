@@ -85,13 +85,13 @@ export default function SearchAutocomplete() {
   return (
     <div ref={wrapperRef} className="relative w-full max-w-2xl mx-auto">
       <div className="relative group">
-        {/* Glow effect behind input */}
-        <div className="absolute -inset-1 bg-linear-to-r from-sky-400 to-violet-400 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity" />
+        {/* Subtle border glow on focus */}
+        <div className="absolute -inset-px bg-linear-to-r from-sky-500 via-violet-500 to-fuchsia-500 rounded-2xl opacity-0 group-focus-within:opacity-50 transition-opacity duration-300 blur-sm" />
         
-        <div className="relative flex items-center">
+        <div className="relative flex items-center bg-slate-800 rounded-2xl border border-slate-700 group-hover:border-slate-600 group-focus-within:border-sky-500/70 transition-all duration-300 shadow-lg">
           {/* Search icon */}
-          <div className="absolute left-4 md:left-5 text-slate-400">
-            <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="absolute left-4 md:left-5 text-slate-400 group-focus-within:text-sky-400 transition-colors">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
@@ -102,19 +102,19 @@ export default function SearchAutocomplete() {
             onChange={(e) => setQuery(e.target.value)}
             onFocus={() => results.length > 0 && setIsOpen(true)}
             placeholder="Caută firmă sau PFA..."
-            className="w-full pl-12 md:pl-14 pr-12 md:pr-14 py-4 md:py-5 text-base md:text-lg border border-white/20 rounded-full bg-white/10 backdrop-blur-sm text-white placeholder-slate-400 focus:border-sky-400/50 focus:ring-4 focus:ring-sky-400/20 transition-all"
+            className="w-full pl-12 md:pl-14 pr-14 md:pr-16 py-4 text-base bg-transparent text-white placeholder-slate-400 focus:outline-none font-medium"
           />
           
           {/* Loading or search button */}
           <div className="absolute right-2 md:right-3">
             {loading ? (
-              <div className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center">
-                <div className="w-5 h-5 md:w-6 md:h-6 border-2 border-sky-500 border-t-transparent rounded-full animate-spin" />
+              <div className="w-10 h-10 flex items-center justify-center">
+                <div className="w-5 h-5 border-2 border-sky-500 border-t-transparent rounded-full animate-spin" />
               </div>
             ) : (
-              <button className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-linear-to-r from-sky-500 to-violet-500 rounded-full text-white hover:shadow-lg hover:shadow-violet-500/25 hover:scale-105 transition-all">
-                <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              <button className="w-10 h-10 flex items-center justify-center bg-linear-to-r from-sky-500 to-violet-500 rounded-xl text-white hover:shadow-lg hover:shadow-violet-500/30 hover:scale-105 active:scale-95 transition-all">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
               </button>
             )}
