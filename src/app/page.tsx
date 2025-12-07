@@ -74,20 +74,20 @@ export default function Home() {
               </div>
               
               {/* Stats Row */}
-              <div className="flex gap-8" aria-label="Statistici platformă">
-                <div>
-                  <div className="text-3xl md:text-4xl font-black text-white">500+</div>
-                  <div className="text-sm text-slate-400">Companii</div>
+              <div className="flex justify-center lg:justify-start gap-4 sm:gap-8" aria-label="Statistici platformă">
+                <div className="text-center sm:text-left">
+                  <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white">500+</div>
+                  <div className="text-xs sm:text-sm text-slate-400">Companii</div>
                 </div>
                 <div className="w-px bg-white/20" />
-                <div>
-                  <div className="text-3xl md:text-4xl font-black text-white">2000+</div>
-                  <div className="text-sm text-slate-400">Recenzii</div>
+                <div className="text-center sm:text-left">
+                  <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white">2000+</div>
+                  <div className="text-xs sm:text-sm text-slate-400">Recenzii</div>
                 </div>
                 <div className="w-px bg-white/20" />
-                <div>
-                  <div className="text-3xl md:text-4xl font-black text-white">4.2★</div>
-                  <div className="text-sm text-slate-400">Rating mediu</div>
+                <div className="text-center sm:text-left">
+                  <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white">4.2★</div>
+                  <div className="text-xs sm:text-sm text-slate-400">Rating</div>
                 </div>
               </div>
             </div>
@@ -294,23 +294,23 @@ export default function Home() {
             <span className="text-xs md:text-sm text-white/80">Comunitate activă</span>
           </div>
           
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-white mb-4 md:mb-6">
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-white mb-4 md:mb-6 px-2">
             Ai avut o experiență cu{' '}
             <span className="bg-linear-to-r from-sky-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
               o firmă
             </span>
             ?
           </h2>
-          <p className="text-slate-300 text-xl mb-10 max-w-2xl mx-auto">
+          <p className="text-slate-300 text-base md:text-xl mb-8 md:mb-10 max-w-2xl mx-auto px-2">
             Recenzia ta poate ajuta mii de oameni să facă alegerea corectă
           </p>
           
           <a 
             href="#adauga-recenzie"
-            className="group relative inline-flex items-center gap-3 px-10 py-5 bg-linear-to-r from-sky-500 to-violet-500 rounded-2xl font-bold text-lg text-white overflow-hidden transition-all hover:scale-105 hover:shadow-2xl hover:shadow-violet-500/30"
+            className="group relative inline-flex items-center gap-2 md:gap-3 px-6 md:px-10 py-4 md:py-5 bg-linear-to-r from-sky-500 to-violet-500 rounded-xl md:rounded-2xl font-bold text-base md:text-lg text-white overflow-hidden transition-all hover:scale-105 hover:shadow-2xl hover:shadow-violet-500/30"
           >
-            <span className="relative z-10 flex items-center gap-3">
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <span className="relative z-10 flex items-center gap-2 md:gap-3">
+              <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
               </svg>
               Adaugă recenzie acum
