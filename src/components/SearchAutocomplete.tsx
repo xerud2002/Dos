@@ -134,7 +134,7 @@ export default function SearchAutocomplete() {
             </span>
           </div>
           <ul className="max-h-72 overflow-y-auto">
-            {results.map((provider, index) => (
+            {results.map((provider) => (
               <li
                 key={provider.id}
                 onClick={() => handleSelect(provider)}

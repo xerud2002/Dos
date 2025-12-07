@@ -1,37 +1,96 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { adminDb } from '@/lib/firebase/admin';
 import { FieldValue } from 'firebase-admin/firestore';
+import { checkRateLimit } from '@/lib/utils/rateLimit';
 
 export async function POST(request: NextRequest) {
-  try {
-    const { nume, telefon, recenzie, rating } = await request.json();
+  // Rate limiting
+  const rateLimitResult = await checkRateLimit(request, 'review');
+  if (!rateLimitResult.success) {
+    return rateLimitResult.response;
+  }
 
-    if (!nume || !telefon || !recenzie || !rating) {
+  try {
+    const { nume, telefon, recenzie, rating, furnizorId } = await request.json();
+
+    // Validate required fields
+    if (!nume || !telefon || !recenzie || rating === undefined) {
       return NextResponse.json(
         { mesaj: 'Toate câmpurile sunt obligatorii.' },
         { status: 400 }
       );
     }
 
-    const ultimele8 = telefon.slice(-8);
+    // Validate rating (must be 1-5)
+    const parsedRating = parseFloat(rating);
+    if (isNaN(parsedRating) || parsedRating < 1 || parsedRating > 5) {
+      return NextResponse.json(
+        { mesaj: 'Rating-ul trebuie să fie între 1 și 5.' },
+        { status: 400 }
+      );
+    }
+
+    // Validate name length
+    if (nume.length < 2 || nume.length > 100) {
+      return NextResponse.json(
+        { mesaj: 'Numele trebuie să aibă între 2 și 100 caractere.' },
+        { status: 400 }
+      );
+    }
+
+    // Validate phone format (basic check)
+    const phoneRegex = /^[\d\s\+\-\(\)]{6,20}$/;
+    if (!phoneRegex.test(telefon)) {
+      return NextResponse.json(
+        { mesaj: 'Numărul de telefon nu este valid.' },
+        { status: 400 }
+      );
+    }
+
+    // Validate review length
+    if (recenzie.length < 10 || recenzie.length > 2000) {
+      return NextResponse.json(
+        { mesaj: 'Recenzia trebuie să aibă între 10 și 2000 caractere.' },
+        { status: 400 }
+      );
+    }
+
+    // Sanitize inputs
+    const sanitizedNume = nume.trim().substring(0, 100);
+    const sanitizedTelefon = telefon.trim().substring(0, 20);
+    const sanitizedRecenzie = recenzie.trim().substring(0, 2000);
+
     let furnizorRef = null;
 
-    // Search for existing provider by phone or name
-    const snapshot = await adminDb.collection('furnizori').limit(100).get();
-    snapshot.forEach((doc) => {
-      const data = doc.data();
-      const telFinal = (data.telefon || '').slice(-8);
-      const numeFinal = (data.nume || '').toLowerCase();
-      if (telFinal === ultimele8 || numeFinal === nume.toLowerCase()) {
-        furnizorRef = doc.ref;
+    // If furnizorId provided, use it directly (from autocomplete selection)
+    if (furnizorId) {
+      const existingDoc = await adminDb.collection('furnizori').doc(furnizorId).get();
+      if (existingDoc.exists) {
+        furnizorRef = existingDoc.ref;
       }
-    });
+    }
+
+    // If no furnizorId or not found, search by phone or name
+    if (!furnizorRef) {
+      const ultimele8 = sanitizedTelefon.slice(-8);
+      const snapshot = await adminDb.collection('furnizori').limit(100).get();
+      
+      for (const doc of snapshot.docs) {
+        const data = doc.data();
+        const telFinal = (data.telefon || '').slice(-8);
+        const numeFinal = (data.nume || '').toLowerCase();
+        if (telFinal === ultimele8 || numeFinal === sanitizedNume.toLowerCase()) {
+          furnizorRef = doc.ref;
+          break;
+        }
+      }
+    }
 
     // Create new provider if not found
     if (!furnizorRef) {
       const nouProfil = await adminDb.collection('furnizori').add({
-        nume,
-        telefon,
+        nume: sanitizedNume,
+        telefon: sanitizedTelefon,
         creat_la: new Date().toISOString(),
       });
       furnizorRef = nouProfil;
@@ -39,9 +98,9 @@ export async function POST(request: NextRequest) {
 
     // Add the review
     await furnizorRef.collection('recenzii').add({
-      mesaj: recenzie,
+      mesaj: sanitizedRecenzie,
       data: new Date().toISOString(),
-      rating: parseFloat(rating),
+      rating: parsedRating,
       timestamp: FieldValue.serverTimestamp(),
     });
 
@@ -56,9 +115,15 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
+  // Rate limiting for search
+  const rateLimitResult = await checkRateLimit(request, 'search');
+  if (!rateLimitResult.success) {
+    return rateLimitResult.response;
+  }
+
   try {
     const { searchParams } = new URL(request.url);
-    const cautare = (searchParams.get('cautare') || '').toLowerCase();
+    const cautare = (searchParams.get('cautare') || '').toLowerCase().trim().substring(0, 100);
     const toateRecenziile: Array<{
       nume_furnizor: string;
       telefon: string;
