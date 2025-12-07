@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { ThemeProvider } from "@/contexts/ThemeContext";
 import { Header } from "@/components";
 
 const inter = Inter({
@@ -86,13 +85,11 @@ export default function RootLayout({
         <meta name="theme-color" content="#06b6d4" />
         <meta name="google-site-verification" content="" />
       </head>
-      <body className={`${inter.variable} antialiased bg-slate-950 min-h-screen`}>
-        <ThemeProvider>
-          <AuthProvider>
-            <Header />
-            <main>{children}</main>
-          </AuthProvider>
-        </ThemeProvider>
+      <body className={`${inter.variable} antialiased bg-slate-950 min-h-screen dark`}>
+        <AuthProvider>
+          <Header />
+          <main>{children}</main>
+        </AuthProvider>
       </body>
     </html>
   );

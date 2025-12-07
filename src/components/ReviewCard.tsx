@@ -1,11 +1,12 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { getRatingColor, getRatingIconName, getRatingLabel } from '@/lib/utils/rating';
 import { Recenzie } from '@/types';
 
 interface ReviewCardProps {
-  review: Recenzie & { nume_furnizor?: string };
+  review: Recenzie & { nume_furnizor?: string; furnizorId?: string };
 }
 
 export default function ReviewCard({ review }: ReviewCardProps) {
@@ -28,9 +29,10 @@ export default function ReviewCard({ review }: ReviewCardProps) {
 
   return (
     <div 
-      className="group relative bg-slate-800/50 backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-6 border border-white/10 overflow-hidden transition-all hover:border-white/20"
+      className="group relative bg-slate-800/50 backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-6 border border-white/10 overflow-hidden transition-all hover:border-white/20 h-full flex flex-col"
       style={{ 
         boxShadow: `0 4px 30px -4px ${ratingColor}20`,
+        minHeight: '220px',
       }}
     >
       {/* Left border accent */}
@@ -45,7 +47,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
         style={{ background: `linear-gradient(135deg, ${ratingColor}, transparent)` }}
       />
 
-      <div className="relative">
+      <div className="relative flex flex-col flex-1">
         {/* Header with name and rating */}
         <div className="flex items-start justify-between mb-3 md:mb-4">
           <div>
@@ -93,24 +95,29 @@ export default function ReviewCard({ review }: ReviewCardProps) {
         </div>
 
         {/* Review text */}
-        <p className="text-sm md:text-base text-slate-300 mb-3 md:mb-4 leading-relaxed line-clamp-3">
+        <p className="text-sm md:text-base text-slate-300 mb-3 md:mb-4 leading-relaxed line-clamp-2 flex-1">
           &ldquo;{review.mesaj}&rdquo;
         </p>
 
         {/* Footer */}
-        <div className="flex items-center justify-between pt-3 md:pt-4 border-t border-white/10">
+        <div className="flex items-center justify-between pt-3 md:pt-4 border-t border-white/10 mt-auto">
           <div className="flex items-center gap-2 text-xs md:text-sm text-slate-500">
             <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
             {formattedDate}
           </div>
-          <button className="text-xs md:text-sm text-sky-400 hover:text-sky-300 font-medium md:opacity-0 md:group-hover:opacity-100 transition-opacity flex items-center gap-1">
-            Vezi profil
-            <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
+          {review.furnizorId && (
+            <Link 
+              href={`/profil/${review.furnizorId}`}
+              className="text-xs md:text-sm text-sky-400 hover:text-sky-300 font-medium md:opacity-0 md:group-hover:opacity-100 transition-opacity flex items-center gap-1"
+            >
+              Vezi profil
+              <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          )}
         </div>
       </div>
     </div>

@@ -20,6 +20,7 @@ export interface Recenzie {
 }
 
 export interface RecenzieWithFurnizor extends Recenzie {
+  furnizorId: string;
   nume_furnizor: string;
   telefon: string;
 }

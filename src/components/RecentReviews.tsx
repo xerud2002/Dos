@@ -32,6 +32,7 @@ export default function RecentReviews({ refreshTrigger }: RecentReviewsProps) {
             const rec = doc.data();
             allReviews.push({
               id: doc.id,
+              furnizorId: furnizorDoc.id,
               nume_furnizor: furnizorData.nume || 'Anonim',
               telefon: furnizorData.telefon || '',
               mesaj: rec.mesaj,

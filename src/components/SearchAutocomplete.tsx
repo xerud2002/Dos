@@ -112,7 +112,10 @@ export default function SearchAutocomplete() {
                 <div className="w-5 h-5 border-2 border-sky-500 border-t-transparent rounded-full animate-spin" />
               </div>
             ) : (
-              <button className="w-10 h-10 flex items-center justify-center bg-linear-to-r from-sky-500 to-violet-500 rounded-xl text-white hover:shadow-lg hover:shadow-violet-500/30 hover:scale-105 active:scale-95 transition-all">
+              <button 
+                className="w-10 h-10 flex items-center justify-center bg-linear-to-r from-sky-500 to-violet-500 rounded-xl text-white hover:shadow-lg hover:shadow-violet-500/30 hover:scale-105 active:scale-95 transition-all"
+                aria-label="Caută"
+              >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
