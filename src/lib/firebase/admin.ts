@@ -1,24 +1,43 @@
 import { initializeApp, getApps, cert, App } from 'firebase-admin/app';
 import { getFirestore, Firestore } from 'firebase-admin/firestore';
 import { getAuth, Auth } from 'firebase-admin/auth';
+import * as fs from 'fs';
+import * as path from 'path';
 
 let adminApp: App;
-let adminDb: Firestore;
-let adminAuth: Auth;
 
 // Server-side Firebase Admin initialization
 if (getApps().length === 0) {
-  // In production, use environment variables or service account file
-  const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT_KEY 
-    ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY)
-    : undefined;
+  let credential;
+  
+  // Option 1: Environment variable (for production/Vercel)
+  if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
+    try {
+      const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+      credential = cert(serviceAccount);
+    } catch (e) {
+      console.error('Failed to parse FIREBASE_SERVICE_ACCOUNT_KEY:', e);
+    }
+  }
+  
+  // Option 2: Local file (for development)
+  if (!credential) {
+    const serviceAccountPath = path.join(process.cwd(), 'serviceAccountKey.json');
+    if (fs.existsSync(serviceAccountPath)) {
+      try {
+        const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
+        credential = cert(serviceAccount);
+      } catch (e) {
+        console.error('Failed to read serviceAccountKey.json:', e);
+      }
+    }
+  }
 
-  if (serviceAccount) {
-    adminApp = initializeApp({
-      credential: cert(serviceAccount),
-    });
+  if (credential) {
+    adminApp = initializeApp({ credential });
   } else {
-    // Fallback for development - requires service account file
+    // Fallback without credentials (will fail for Firestore operations)
+    console.warn('No Firebase Admin credentials found. API routes will not work.');
     adminApp = initializeApp({
       projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || 'daiostea',
     });
@@ -27,7 +46,7 @@ if (getApps().length === 0) {
   adminApp = getApps()[0];
 }
 
-adminDb = getFirestore(adminApp);
-adminAuth = getAuth(adminApp);
+const adminDb: Firestore = getFirestore(adminApp);
+const adminAuth: Auth = getAuth(adminApp);
 
 export { adminApp, adminDb, adminAuth };
