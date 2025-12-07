@@ -225,35 +225,44 @@ export default function ReviewForm({ onSuccess }: ReviewFormProps) {
               {showSuggestions && suggestions.length > 0 && (
                 <div 
                   ref={suggestionsRef}
-                  className="absolute z-50 left-0 right-0 top-full mt-2 bg-slate-800 border border-slate-700 rounded-xl shadow-xl shadow-black/20 overflow-hidden"
+                  className="absolute z-[100] left-0 right-0 top-full mt-2 bg-slate-800 backdrop-blur-xl border border-slate-700 rounded-xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200"
                 >
-                  <div className="px-3 py-2 border-b border-slate-700/50">
-                    <span className="text-xs font-medium text-slate-400">Furnizori găsiți</span>
+                  <div className="px-3 py-2 border-b border-slate-700/50 bg-slate-900/80">
+                    <span className="text-[10px] md:text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                      {suggestions.length} furnizori găsiți
+                    </span>
                   </div>
-                  {suggestions.map((furnizor) => (
-                    <button
-                      key={furnizor.id}
-                      type="button"
-                      onClick={() => selectFurnizor(furnizor)}
-                      className="w-full px-4 py-3 flex items-center gap-3 hover:bg-slate-700/50 transition-colors text-left"
-                    >
-                      <div className="w-10 h-10 rounded-full bg-linear-to-br from-sky-500/20 to-cyan-500/20 flex items-center justify-center shrink-0">
-                        <svg className="w-5 h-5 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                        </svg>
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-white font-medium truncate">{furnizor.nume}</p>
-                        <p className="text-sm text-slate-400 truncate">
-                          {furnizor.companie && <span>{furnizor.companie} • </span>}
-                          {furnizor.telefon}
-                        </p>
-                      </div>
-                      <svg className="w-4 h-4 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </button>
-                  ))}
+                  <ul className="max-h-[280px] md:max-h-[320px] overflow-y-auto overscroll-contain touch-pan-y"
+                      style={{ WebkitOverflowScrolling: 'touch' }}>
+                    {suggestions.map((furnizor) => (
+                      <li
+                        key={furnizor.id}
+                        onClick={() => selectFurnizor(furnizor)}
+                        className="px-3 md:px-4 py-2.5 md:py-3 cursor-pointer hover:bg-slate-700/50 active:bg-slate-700/70 border-b border-slate-700/30 last:border-0 transition-all group/item"
+                      >
+                        <div className="flex items-center gap-2.5 md:gap-3">
+                          <div className="shrink-0 w-9 h-9 md:w-10 md:h-10 rounded-full bg-linear-to-br from-sky-400 to-violet-500 flex items-center justify-center text-white text-sm md:text-base font-bold shadow-lg">
+                            {(furnizor.nume || furnizor.companie || '?')[0].toUpperCase()}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-semibold text-sm md:text-base text-white truncate group-hover/item:text-sky-400 transition-colors">
+                              {furnizor.nume || 'Fără nume'}
+                            </p>
+                            <p className="text-xs md:text-sm text-slate-400 flex items-center gap-1 mt-0.5">
+                              {furnizor.companie && <span className="truncate">{furnizor.companie} • </span>}
+                              <svg className="w-3 h-3 md:w-3.5 md:h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                              </svg>
+                              <span className="truncate">{furnizor.telefon}</span>
+                            </p>
+                          </div>
+                          <svg className="w-4 h-4 md:w-5 md:h-5 text-slate-500 group-hover/item:text-sky-400 group-hover/item:translate-x-1 transition-all shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               )}
             </div>
