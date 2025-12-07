@@ -14,67 +14,80 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 shadow-md shadow-red-500/20 h-16 flex items-center justify-between px-4 md:px-8">
-        <Link href="/" className="flex items-center">
-          <Image
-            src="/logo.png"
-            alt="daiostea.ro logo"
-            width={120}
-            height={45}
-            className="h-11 w-auto"
-            priority
-          />
-        </Link>
-
-        <div className="flex items-center gap-2">
-          {/* Theme Toggle */}
-          <button
-            onClick={toggleTheme}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
-            title={theme === 'light' ? 'Activează modul întunecat' : 'Activează modul luminos'}
-          >
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-900/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-700">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2 group">
             <Image
-              src={theme === 'light' ? '/icons/moon.png' : '/icons/sun.png'}
-              alt="Toggle theme"
-              width={32}
-              height={32}
+              src="/logo.png"
+              alt="daiostea.ro logo"
+              width={40}
+              height={40}
+              className="h-9 w-auto transition-transform group-hover:scale-110"
+              priority
             />
-          </button>
+            <span className="text-xl font-bold text-slate-800 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
+              daiostea.ro
+            </span>
+          </Link>
 
-          {/* Auth Button */}
-          {user ? (
-            <div className="flex items-center gap-2">
-              <Image
-                src={user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || user.email || 'U')}`}
-                alt="Avatar"
-                width={36}
-                height={36}
-                className="rounded-full"
-              />
-              <span className="hidden md:inline text-sm text-gray-700 dark:text-gray-300">
-                {user.displayName || user.email}
-              </span>
-              <button
-                onClick={logout}
-                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
-                title="Logout"
-              >
-                <Image
-                  src="/icons/logout.png"
-                  alt="Logout"
-                  width={32}
-                  height={32}
-                />
-              </button>
-            </div>
-          ) : (
+          <div className="flex items-center gap-3">
+            {/* Theme Toggle */}
             <button
-              onClick={() => setShowAuthModal(true)}
-              className="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+              onClick={toggleTheme}
+              className="relative p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-300 group"
+              title={theme === 'light' ? 'Activează modul întunecat' : 'Activează modul luminos'}
             >
-              Autentificare
+              <div className="absolute inset-0 rounded-xl bg-linear-to-r from-cyan-400 to-emerald-400 opacity-0 group-hover:opacity-20 transition-opacity" />
+              <Image
+                src={theme === 'light' ? '/icons/moon.png' : '/icons/sun.png'}
+                alt="Toggle theme"
+                width={24}
+                height={24}
+                className="relative transition-transform group-hover:rotate-12"
+              />
             </button>
-          )}
+
+            {/* Auth Button */}
+            {user ? (
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800">
+                  <Image
+                    src={user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || user.email || 'U')}&background=06b6d4&color=fff`}
+                    alt="Avatar"
+                    width={32}
+                    height={32}
+                    className="rounded-full ring-2 ring-cyan-400"
+                  />
+                  <span className="hidden md:inline text-sm font-medium text-slate-700 dark:text-slate-200 max-w-[150px] truncate">
+                    {user.displayName || user.email}
+                  </span>
+                </div>
+                <button
+                  onClick={logout}
+                  className="p-2.5 rounded-xl bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 transition-all group"
+                  title="Logout"
+                >
+                  <Image
+                    src="/icons/logout.png"
+                    alt="Logout"
+                    width={24}
+                    height={24}
+                    className="opacity-70 group-hover:opacity-100 transition-opacity"
+                  />
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setShowAuthModal(true)}
+                className="btn-primary flex items-center gap-2"
+              >
+                <span>Autentificare</span>
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </button>
+            )}
+          </div>
         </div>
       </header>
 

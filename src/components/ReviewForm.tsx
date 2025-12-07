@@ -53,49 +53,58 @@ export default function ReviewForm({ onSuccess }: ReviewFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-200 dark:border-gray-700">
-      <h2 className="text-2xl font-bold text-cyan-500 mb-6">Adaugă o recenzie</h2>
+    <form onSubmit={handleSubmit} className="relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+      {/* Decorative gradient corner */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-cyan-400/20 to-emerald-400/20 rounded-bl-full" />
+      
+      <div className="relative space-y-6">
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <label htmlFor="nume" className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
+              <span className="flex items-center justify-center w-6 h-6 rounded-lg bg-cyan-100 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400 text-xs">1</span>
+              Nume furnizor / companie
+            </label>
+            <input
+              type="text"
+              id="nume"
+              value={nume}
+              onChange={(e) => setNume(e.target.value)}
+              required
+              className="w-full px-4 py-3.5 border-2 border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-700/50 text-slate-900 dark:text-white placeholder-slate-400 input-focus transition-all"
+              placeholder="Ex: EuroTrans SRL"
+            />
+          </div>
 
-      <div className="space-y-4">
-        <div>
-          <label htmlFor="nume" className="block font-semibold text-gray-700 dark:text-gray-300 mb-2">
-            Nume furnizor / companie
-          </label>
-          <input
-            type="text"
-            id="nume"
-            value={nume}
-            onChange={(e) => setNume(e.target.value)}
-            required
-            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-            placeholder="Ex: EuroTrans SRL"
-          />
+          <div className="space-y-2">
+            <label htmlFor="telefon" className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
+              <span className="flex items-center justify-center w-6 h-6 rounded-lg bg-cyan-100 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400 text-xs">2</span>
+              Telefon furnizor
+            </label>
+            <input
+              type="tel"
+              id="telefon"
+              value={telefon}
+              onChange={(e) => setTelefon(e.target.value)}
+              required
+              className="w-full px-4 py-3.5 border-2 border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-700/50 text-slate-900 dark:text-white placeholder-slate-400 input-focus transition-all"
+              placeholder="Ex: +40712345678"
+            />
+          </div>
         </div>
 
-        <div>
-          <label htmlFor="telefon" className="block font-semibold text-gray-700 dark:text-gray-300 mb-2">
-            Telefon furnizor
+        <div className="space-y-2">
+          <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
+            <span className="flex items-center justify-center w-6 h-6 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 text-xs">3</span>
+            Selectează rating
           </label>
-          <input
-            type="tel"
-            id="telefon"
-            value={telefon}
-            onChange={(e) => setTelefon(e.target.value)}
-            required
-            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-            placeholder="Ex: +40712345678"
-          />
+          <div className="p-4 bg-slate-50 dark:bg-slate-700/30 rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-600">
+            <StarRatingInput value={rating} onChange={setRating} />
+          </div>
         </div>
 
-        <div>
-          <label className="block font-semibold text-gray-700 dark:text-gray-300 mb-2">
-            Rating
-          </label>
-          <StarRatingInput value={rating} onChange={setRating} />
-        </div>
-
-        <div>
-          <label htmlFor="recenzie" className="block font-semibold text-gray-700 dark:text-gray-300 mb-2">
+        <div className="space-y-2">
+          <label htmlFor="recenzie" className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
+            <span className="flex items-center justify-center w-6 h-6 rounded-lg bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 text-xs">4</span>
             Recenzia ta
           </label>
           <textarea
@@ -104,21 +113,41 @@ export default function ReviewForm({ onSuccess }: ReviewFormProps) {
             onChange={(e) => setRecenzie(e.target.value)}
             required
             rows={4}
-            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent resize-none"
+            className="w-full px-4 py-3.5 border-2 border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-700/50 text-slate-900 dark:text-white placeholder-slate-400 input-focus transition-all resize-none"
             placeholder="Descrie experiența ta cu acest furnizor..."
           />
         </div>
 
         {error && (
-          <p className="text-red-500 text-sm">{error}</p>
+          <div className="flex items-center gap-2 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-red-600 dark:text-red-400">
+            <svg className="w-5 h-5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+            </svg>
+            <span className="text-sm">{error}</span>
+          </div>
         )}
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-lg font-semibold transition-colors disabled:opacity-50"
+          className="w-full btn-primary py-4 text-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {loading ? 'Se trimite...' : 'Trimite recenzia'}
+          {loading ? (
+            <>
+              <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+              </svg>
+              Se trimite...
+            </>
+          ) : (
+            <>
+              Trimite recenzia
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </>
+          )}
         </button>
       </div>
     </form>

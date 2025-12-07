@@ -62,24 +62,44 @@ export default function RecentReviews({ refreshTrigger }: RecentReviewsProps) {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center py-12">
-        <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+      <div className="flex flex-col items-center justify-center py-16">
+        <div className="relative">
+          <div className="w-16 h-16 border-4 border-slate-200 dark:border-slate-700 rounded-full"></div>
+          <div className="w-16 h-16 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
+        </div>
+        <p className="mt-4 text-slate-500 dark:text-slate-400 animate-pulse">Se încarcă recenziile...</p>
       </div>
     );
   }
 
   if (reviews.length === 0) {
     return (
-      <p className="text-center text-gray-500 dark:text-gray-400 py-8">
-        Nu există recenzii încă. Fii primul care adaugă o recenzie!
-      </p>
+      <div className="text-center py-16">
+        <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-linear-to-br from-cyan-100 to-emerald-100 dark:from-cyan-900/30 dark:to-emerald-900/30 mb-6">
+          <svg className="w-10 h-10 text-cyan-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+        </div>
+        <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-2">
+          Nu există recenzii încă
+        </h3>
+        <p className="text-slate-500 dark:text-slate-400 max-w-md mx-auto">
+          Fii primul care adaugă o recenzie! Experiența ta poate ajuta alți utilizatori să aleagă mai bine.
+        </p>
+      </div>
     );
   }
 
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {reviews.map((review) => (
-        <ReviewCard key={review.id} review={review} />
+      {reviews.map((review, index) => (
+        <div 
+          key={review.id} 
+          className="animate-in fade-in slide-in-from-bottom-4"
+          style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'both' }}
+        >
+          <ReviewCard review={review} />
+        </div>
       ))}
     </div>
   );
