@@ -177,9 +177,10 @@ export default function ReviewForm({ onSuccess }: ReviewFormProps) {
       {/* Decorative elements */}
       <div className="absolute -top-px left-20 right-20 h-px bg-linear-to-r from-transparent via-sky-500/50 to-transparent" />
       
-      <div className="space-y-6">
-        {/* Step 1 & 2: Name and Phone */}
-        <div className="grid md:grid-cols-2 gap-4 md:gap-5">
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+        {/* Left Column: Steps 1, 2, 3 */}
+        <div className="flex-1 space-y-5">
+          {/* Step 1: Name */}
           <div className="group">
             <label htmlFor="nume" className="flex items-center gap-2.5 text-sm font-semibold text-slate-200 mb-2.5">
               <span className="flex items-center justify-center w-6 h-6 rounded-lg bg-linear-to-br from-sky-500 to-cyan-500 text-white text-xs font-bold shadow-lg shadow-sky-500/25">1</span>
@@ -266,6 +267,7 @@ export default function ReviewForm({ onSuccess }: ReviewFormProps) {
             )}
           </div>
 
+          {/* Step 2: Phone */}
           <div className="group">
             <label htmlFor="telefon" className="flex items-center gap-2.5 text-sm font-semibold text-slate-200 mb-2.5">
               <span className="flex items-center justify-center w-6 h-6 rounded-lg bg-linear-to-br from-violet-500 to-purple-500 text-white text-xs font-bold shadow-lg shadow-violet-500/25">2</span>
@@ -288,89 +290,94 @@ export default function ReviewForm({ onSuccess }: ReviewFormProps) {
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Step 3: Rating */}
-        <div>
-          <label className="flex items-center gap-2.5 text-sm font-semibold text-slate-200 mb-3">
-            <span className="flex items-center justify-center w-6 h-6 rounded-lg bg-linear-to-br from-amber-500 to-orange-500 text-white text-xs font-bold shadow-lg shadow-amber-500/25">3</span>
-            Selectează rating
-          </label>
-          <div 
-            className="relative p-5 md:p-6 rounded-xl border transition-all duration-300"
-            style={{
-              backgroundColor: displayRating ? `${ratingColors[displayRating as keyof typeof ratingColors]}08` : 'rgb(15 23 42 / 0.5)',
-              borderColor: displayRating ? `${ratingColors[displayRating as keyof typeof ratingColors]}30` : 'rgb(51 65 85)',
-            }}
-          >
-            {/* Stars */}
-            <div className="flex items-center justify-center gap-1 md:gap-2">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <button
-                  key={star}
-                  type="button"
-                  onClick={() => setRating(star)}
-                  onMouseEnter={() => setHoverRating(star)}
-                  onMouseLeave={() => setHoverRating(0)}
-                  className="relative p-1 transition-all duration-200 hover:scale-125 active:scale-95"
-                >
+          {/* Step 3: Rating */}
+          <div>
+            <label className="flex items-center gap-2.5 text-sm font-semibold text-slate-200 mb-3">
+              <span className="flex items-center justify-center w-6 h-6 rounded-lg bg-linear-to-br from-amber-500 to-orange-500 text-white text-xs font-bold shadow-lg shadow-amber-500/25">3</span>
+              Selectează rating
+            </label>
+            <div 
+              className="relative p-4 md:p-5 rounded-xl border transition-all duration-300"
+              style={{
+                backgroundColor: displayRating ? `${ratingColors[displayRating as keyof typeof ratingColors]}08` : 'rgb(15 23 42 / 0.5)',
+                borderColor: displayRating ? `${ratingColors[displayRating as keyof typeof ratingColors]}30` : 'rgb(51 65 85)',
+              }}
+            >
+              {/* Stars */}
+              <div className="flex items-center justify-center gap-1 md:gap-2">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    type="button"
+                    onClick={() => setRating(star)}
+                    onMouseEnter={() => setHoverRating(star)}
+                    onMouseLeave={() => setHoverRating(0)}
+                    className="relative p-1 transition-all duration-200 hover:scale-125 active:scale-95"
+                  >
+                    <span 
+                      className="text-3xl md:text-4xl block transition-all duration-200"
+                      style={{
+                        color: star <= displayRating 
+                          ? ratingColors[displayRating as keyof typeof ratingColors] 
+                          : '#475569',
+                        textShadow: star <= displayRating 
+                          ? `0 0 30px ${ratingColors[displayRating as keyof typeof ratingColors]}60`
+                          : 'none',
+                        transform: star <= displayRating ? 'scale(1.05)' : 'scale(1)',
+                      }}
+                    >
+                      ★
+                    </span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Rating Label */}
+              <div className="h-9 flex items-center justify-center mt-2">
+                {displayRating > 0 && (
                   <span 
-                    className="text-4xl md:text-5xl block transition-all duration-200"
-                    style={{
-                      color: star <= displayRating 
-                        ? ratingColors[displayRating as keyof typeof ratingColors] 
-                        : '#475569',
-                      textShadow: star <= displayRating 
-                        ? `0 0 30px ${ratingColors[displayRating as keyof typeof ratingColors]}60`
-                        : 'none',
-                      transform: star <= displayRating ? 'scale(1.05)' : 'scale(1)',
+                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-bold animate-in fade-in zoom-in-95 duration-200"
+                    style={{ 
+                      backgroundColor: `${ratingColors[displayRating as keyof typeof ratingColors]}20`,
+                      color: ratingColors[displayRating as keyof typeof ratingColors],
+                      boxShadow: `0 0 20px ${ratingColors[displayRating as keyof typeof ratingColors]}20`
                     }}
                   >
-                    ★
+                    <span className="text-base">
+                      {displayRating === 1 && '😞'}
+                      {displayRating === 2 && '😕'}
+                      {displayRating === 3 && '😐'}
+                      {displayRating === 4 && '😊'}
+                      {displayRating === 5 && '🤩'}
+                    </span>
+                    {ratingLabels[displayRating as keyof typeof ratingLabels]}
                   </span>
-                </button>
-              ))}
-            </div>
-
-            {/* Rating Label */}
-            <div className="h-10 flex items-center justify-center mt-3">
-              {displayRating > 0 && (
-                <span 
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold animate-in fade-in zoom-in-95 duration-200"
-                  style={{ 
-                    backgroundColor: `${ratingColors[displayRating as keyof typeof ratingColors]}20`,
-                    color: ratingColors[displayRating as keyof typeof ratingColors],
-                    boxShadow: `0 0 20px ${ratingColors[displayRating as keyof typeof ratingColors]}20`
-                  }}
-                >
-                  <span className="text-lg">
-                    {displayRating === 1 && '😞'}
-                    {displayRating === 2 && '😕'}
-                    {displayRating === 3 && '😐'}
-                    {displayRating === 4 && '😊'}
-                    {displayRating === 5 && '🤩'}
-                  </span>
-                  {ratingLabels[displayRating as keyof typeof ratingLabels]}
-                </span>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Step 4: Review Text */}
-        <div>
+        {/* Vertical Divider */}
+        <div className="hidden lg:block w-px bg-slate-700/50 self-stretch" />
+        
+        {/* Horizontal Divider for mobile */}
+        <div className="lg:hidden h-px bg-slate-700/50" />
+
+        {/* Right Column: Step 4 */}
+        <div className="flex-1 flex flex-col">
           <label htmlFor="recenzie" className="flex items-center gap-2.5 text-sm font-semibold text-slate-200 mb-2.5">
             <span className="flex items-center justify-center w-6 h-6 rounded-lg bg-linear-to-br from-fuchsia-500 to-pink-500 text-white text-xs font-bold shadow-lg shadow-fuchsia-500/25">4</span>
             Recenzia ta
           </label>
-          <div className="relative">
+          <div className="relative flex-1">
             <textarea
               id="recenzie"
               value={recenzie}
               onChange={(e) => setRecenzie(e.target.value)}
               required
-              rows={4}
-              className="w-full px-4 py-3.5 border border-slate-700 rounded-xl bg-slate-900/50 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-fuchsia-500/50 focus:border-fuchsia-500 transition-all resize-none"
+              className="w-full h-full min-h-[200px] lg:min-h-0 px-4 py-3.5 border border-slate-700 rounded-xl bg-slate-900/50 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-fuchsia-500/50 focus:border-fuchsia-500 transition-all resize-none"
               placeholder="Descrie experiența ta cu acest furnizor..."
             />
             <div className="absolute bottom-3 right-3 text-xs text-slate-600">
@@ -378,8 +385,10 @@ export default function ReviewForm({ onSuccess }: ReviewFormProps) {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Error Message */}
+      {/* Bottom section: Error and Submit */}
+      <div className="mt-6 space-y-4">
         {error && (
           <div className="flex items-center gap-3 p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 animate-in slide-in-from-top-2 duration-200">
             <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center shrink-0">
