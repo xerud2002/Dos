@@ -1,12 +1,23 @@
 'use client';
 
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect, use, useRef } from 'react';
 import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
-import { db } from '@/lib/firebase/client';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { db, storage } from '@/lib/firebase/client';
+import { useAuth } from '@/contexts/AuthContext';
 import { ReviewCard } from '@/components';
 import { Furnizor, Recenzie } from '@/types';
 import { getRatingColor } from '@/lib/utils/rating';
 import Link from 'next/link';
+
+interface ClaimFormData {
+  numeReprezentant: string;
+  functie: string;
+  telefon: string;
+  cui: string;
+  adresa: string;
+  message: string;
+}
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -14,10 +25,24 @@ interface PageProps {
 
 export default function ProfilPage({ params }: PageProps) {
   const { id } = use(params);
+  const { user } = useAuth();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [furnizor, setFurnizor] = useState<Furnizor | null>(null);
   const [recenzii, setRecenzii] = useState<Recenzie[]>([]);
   const [loading, setLoading] = useState(true);
   const [averageRating, setAverageRating] = useState(0);
+  const [showClaimModal, setShowClaimModal] = useState(false);
+  const [claimSubmitting, setClaimSubmitting] = useState(false);
+  const [claimSuccess, setClaimSuccess] = useState(false);
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [claimForm, setClaimForm] = useState<ClaimFormData>({
+    numeReprezentant: '',
+    functie: '',
+    telefon: '',
+    cui: '',
+    adresa: '',
+    message: '',
+  });
   const [ratingDistribution, setRatingDistribution] = useState<Record<number, number>>({
     1: 0, 2: 0, 3: 0, 4: 0, 5: 0
   });
@@ -88,6 +113,73 @@ export default function ProfilPage({ params }: PageProps) {
 
     loadProfile();
   }, [id]);
+
+  const handleClaimSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user || !furnizor) return;
+
+    // Validate required fields
+    if (!claimForm.numeReprezentant || !claimForm.telefon || !claimForm.cui) {
+      alert('Vă rugăm completați câmpurile obligatorii: Nume reprezentant, Telefon și CUI.');
+      return;
+    }
+
+    setClaimSubmitting(true);
+    try {
+      // Upload files to Firebase Storage
+      const fileUrls: string[] = [];
+      if (storage && uploadedFiles.length > 0) {
+        for (const file of uploadedFiles) {
+          const fileRef = ref(storage, `claim-documents/${id}/${Date.now()}-${file.name}`);
+          await uploadBytes(fileRef, file);
+          const url = await getDownloadURL(fileRef);
+          fileUrls.push(url);
+        }
+      }
+
+      const response = await fetch('/api/claim', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          furnizorId: id,
+          furnizorNume: furnizor.nume || furnizor.companie,
+          userId: user.uid,
+          userEmail: user.email,
+          userName: user.displayName,
+          ...claimForm,
+          documents: fileUrls,
+        }),
+      });
+
+      if (response.ok) {
+        setClaimSuccess(true);
+      } else {
+        throw new Error('Failed to submit claim');
+      }
+    } catch (error) {
+      console.error('Error submitting claim:', error);
+      alert('A apărut o eroare. Vă rugăm încercați din nou.');
+    } finally {
+      setClaimSubmitting(false);
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      const newFiles = Array.from(files);
+      // Limit to 5 files, max 10MB each
+      const validFiles = newFiles.filter(file => file.size <= 10 * 1024 * 1024);
+      if (validFiles.length !== newFiles.length) {
+        alert('Unele fișiere depășesc limita de 10MB și nu au fost adăugate.');
+      }
+      setUploadedFiles(prev => [...prev, ...validFiles].slice(0, 5));
+    }
+  };
+
+  const removeFile = (index: number) => {
+    setUploadedFiles(prev => prev.filter((_, i) => i !== index));
+  };
 
   if (loading) {
     return (
@@ -268,6 +360,19 @@ export default function ProfilPage({ params }: PageProps) {
                     </div>
                   </a>
                 )}
+                
+                {/* Claim Button - only show if not claimed */}
+                {!furnizor.claimed && (
+                  <button
+                    onClick={() => setShowClaimModal(true)}
+                    className="w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-linear-to-r from-emerald-500 to-teal-500 text-white font-medium hover:shadow-lg hover:shadow-emerald-500/25 hover:scale-[1.02] active:scale-[0.98] transition-all"
+                  >
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                    Revendică acest profil
+                  </button>
+                )}
               </div>
             </div>
 
@@ -368,6 +473,262 @@ export default function ProfilPage({ params }: PageProps) {
           </Link>
         </div>
       </div>
+
+      {/* Claim Modal */}
+      {showClaimModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
+          <div 
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => !claimSubmitting && setShowClaimModal(false)}
+          />
+          <div className="relative bg-slate-900 rounded-2xl p-6 md:p-8 w-full max-w-lg border border-slate-700 shadow-2xl my-8 max-h-[90vh] overflow-y-auto">
+            {claimSuccess ? (
+              <div className="text-center py-6">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                  <svg className="w-8 h-8 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">Cerere trimisă!</h3>
+                <p className="text-slate-400 mb-6">
+                  Vom verifica documentele și te vom contacta în curând pe email.
+                </p>
+                <button
+                  onClick={() => {
+                    setShowClaimModal(false);
+                    setClaimSuccess(false);
+                    setClaimForm({
+                      numeReprezentant: '',
+                      functie: '',
+                      telefon: '',
+                      cui: '',
+                      adresa: '',
+                      message: '',
+                    });
+                    setUploadedFiles([]);
+                  }}
+                  className="px-6 py-2.5 bg-slate-700 text-white rounded-xl font-medium hover:bg-slate-600 transition-colors"
+                >
+                  Închide
+                </button>
+              </div>
+            ) : (
+              <>
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl font-bold text-white">Revendică profilul</h3>
+                  <button
+                    onClick={() => setShowClaimModal(false)}
+                    className="p-2 rounded-lg hover:bg-slate-800 transition-colors"
+                    disabled={claimSubmitting}
+                  >
+                    <svg className="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+
+                {!user ? (
+                  <div className="text-center py-4">
+                    <p className="text-slate-400 mb-4">
+                      Trebuie să fii autentificat pentru a revendica acest profil.
+                    </p>
+                    <button
+                      onClick={() => setShowClaimModal(false)}
+                      className="px-6 py-2.5 bg-linear-to-r from-sky-500 to-violet-500 text-white rounded-xl font-medium hover:shadow-lg transition-all"
+                    >
+                      Autentifică-te
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleClaimSubmit} className="space-y-4">
+                    <p className="text-slate-400 text-sm">
+                      Completează formularul pentru a revendica acest profil. Vom verifica informațiile și te vom contacta.
+                    </p>
+                    
+                    {/* Company & Account Info */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="p-3 rounded-xl bg-slate-800 border border-slate-700">
+                        <p className="text-xs text-slate-500 mb-1">Companie</p>
+                        <p className="text-white font-medium text-sm truncate">{furnizor?.nume || furnizor?.companie}</p>
+                      </div>
+                      <div className="p-3 rounded-xl bg-slate-800 border border-slate-700">
+                        <p className="text-xs text-slate-500 mb-1">Contul tău</p>
+                        <p className="text-white font-medium text-sm truncate">{user.email}</p>
+                      </div>
+                    </div>
+
+                    {/* Representative Name */}
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-1.5">
+                        Nume reprezentant <span className="text-red-400">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={claimForm.numeReprezentant}
+                        onChange={(e) => setClaimForm(prev => ({ ...prev, numeReprezentant: e.target.value }))}
+                        placeholder="Ion Popescu"
+                        className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-sky-500"
+                        required
+                      />
+                    </div>
+
+                    {/* Function & Phone */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-1.5">
+                          Funcție
+                        </label>
+                        <input
+                          type="text"
+                          value={claimForm.functie}
+                          onChange={(e) => setClaimForm(prev => ({ ...prev, functie: e.target.value }))}
+                          placeholder="Administrator"
+                          className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-sky-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-1.5">
+                          Telefon <span className="text-red-400">*</span>
+                        </label>
+                        <input
+                          type="tel"
+                          value={claimForm.telefon}
+                          onChange={(e) => setClaimForm(prev => ({ ...prev, telefon: e.target.value }))}
+                          placeholder="+40712345678"
+                          className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-sky-500"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    {/* CUI */}
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-1.5">
+                        CUI / CIF <span className="text-red-400">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={claimForm.cui}
+                        onChange={(e) => setClaimForm(prev => ({ ...prev, cui: e.target.value }))}
+                        placeholder="RO12345678"
+                        className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-sky-500"
+                        required
+                      />
+                    </div>
+
+                    {/* Address */}
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-1.5">
+                        Adresa sediului
+                      </label>
+                      <input
+                        type="text"
+                        value={claimForm.adresa}
+                        onChange={(e) => setClaimForm(prev => ({ ...prev, adresa: e.target.value }))}
+                        placeholder="Str. Exemplu nr. 1, București"
+                        className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-sky-500"
+                      />
+                    </div>
+
+                    {/* File Upload */}
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-1.5">
+                        Documente justificative
+                      </label>
+                      <p className="text-xs text-slate-500 mb-2">
+                        Încarcă certificat CUI, certificat constatator sau alt document oficial (max 5 fișiere, 10MB/fișier)
+                      </p>
+                      
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        onChange={handleFileChange}
+                        accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                        className="hidden"
+                        multiple
+                      />
+                      
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="w-full p-4 border-2 border-dashed border-slate-700 rounded-xl hover:border-sky-500 transition-colors group"
+                        disabled={uploadedFiles.length >= 5}
+                      >
+                        <div className="flex flex-col items-center gap-2 text-slate-400 group-hover:text-sky-400">
+                          <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                          </svg>
+                          <span className="text-sm font-medium">Click pentru a încărca fișiere</span>
+                        </div>
+                      </button>
+
+                      {/* Uploaded Files List */}
+                      {uploadedFiles.length > 0 && (
+                        <div className="mt-3 space-y-2">
+                          {uploadedFiles.map((file, index) => (
+                            <div key={index} className="flex items-center justify-between p-2 bg-slate-800 rounded-lg">
+                              <div className="flex items-center gap-2 min-w-0">
+                                <svg className="w-5 h-5 text-sky-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                <span className="text-sm text-white truncate">{file.name}</span>
+                                <span className="text-xs text-slate-500 shrink-0">({(file.size / 1024 / 1024).toFixed(1)}MB)</span>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => removeFile(index)}
+                                className="p-1 hover:bg-slate-700 rounded transition-colors"
+                              >
+                                <svg className="w-4 h-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Message */}
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-1.5">
+                        Mesaj adițional
+                      </label>
+                      <textarea
+                        value={claimForm.message}
+                        onChange={(e) => setClaimForm(prev => ({ ...prev, message: e.target.value }))}
+                        placeholder="Informații suplimentare despre companie..."
+                        className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 resize-none"
+                        rows={2}
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={claimSubmitting}
+                      className="w-full py-3 bg-linear-to-r from-emerald-500 to-teal-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-emerald-500/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    >
+                      {claimSubmitting ? (
+                        <>
+                          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                          Se trimite...
+                        </>
+                      ) : (
+                        <>
+                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                          </svg>
+                          Trimite cererea
+                        </>
+                      )}
+                    </button>
+                  </form>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
