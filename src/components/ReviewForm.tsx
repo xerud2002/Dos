@@ -225,14 +225,14 @@ export default function ReviewForm({ onSuccess }: ReviewFormProps) {
               {showSuggestions && suggestions.length > 0 && (
                 <div 
                   ref={suggestionsRef}
-                  className="absolute z-[100] left-0 right-0 top-full mt-2 bg-slate-800 backdrop-blur-xl border border-slate-700 rounded-xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200"
+                  className="absolute z-100 left-0 right-0 top-full mt-2 bg-slate-800 backdrop-blur-xl border border-slate-700 rounded-xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200"
                 >
                   <div className="px-3 py-2 border-b border-slate-700/50 bg-slate-900/80">
                     <span className="text-[10px] md:text-xs font-semibold text-slate-400 uppercase tracking-wider">
                       {suggestions.length} furnizori găsiți
                     </span>
                   </div>
-                  <ul className="max-h-[280px] md:max-h-[320px] overflow-y-auto overscroll-contain touch-pan-y"
+                  <ul className="max-h-70 md:max-h-80 overflow-y-auto overscroll-contain touch-pan-y"
                       style={{ WebkitOverflowScrolling: 'touch' }}>
                     {suggestions.map((furnizor) => (
                       <li

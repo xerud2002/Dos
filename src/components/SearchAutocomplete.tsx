@@ -127,13 +127,13 @@ export default function SearchAutocomplete() {
 
       {/* Dropdown Results */}
       {isOpen && results.length > 0 && (
-        <div className="absolute z-[100] w-full mt-2 bg-slate-800 backdrop-blur-xl rounded-xl md:rounded-2xl shadow-2xl border border-slate-700 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="absolute z-100 w-full mt-2 bg-slate-800 backdrop-blur-xl rounded-xl md:rounded-2xl shadow-2xl border border-slate-700 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
           <div className="px-3 md:px-4 py-2 md:py-3 border-b border-slate-700/50 bg-slate-900/80">
             <span className="text-[10px] md:text-xs font-semibold text-slate-400 uppercase tracking-wider">
               {results.length} rezultate găsite
             </span>
           </div>
-          <ul className="max-h-[280px] md:max-h-[320px] overflow-y-auto overscroll-contain touch-pan-y"
+          <ul className="max-h-70 md:max-h-80 overflow-y-auto overscroll-contain touch-pan-y"
               style={{ WebkitOverflowScrolling: 'touch' }}>
             {results.map((provider) => (
               <li
