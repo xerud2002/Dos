@@ -10,8 +10,17 @@ interface RecentReviewsProps {
   refreshTrigger?: number;
 }
 
+interface FurnizorStats {
+  [furnizorId: string]: {
+    totalRating: number;
+    count: number;
+    avgRating: number;
+  };
+}
+
 export default function RecentReviews({ refreshTrigger }: RecentReviewsProps) {
   const [reviews, setReviews] = useState<RecenzieWithFurnizor[]>([]);
+  const [furnizorStats, setFurnizorStats] = useState<FurnizorStats>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -22,26 +31,45 @@ export default function RecentReviews({ refreshTrigger }: RecentReviewsProps) {
       try {
         const furnizoriSnapshot = await getDocs(collection(db, 'furnizori'));
         const allReviews: RecenzieWithFurnizor[] = [];
+        const stats: FurnizorStats = {};
 
         for (const furnizorDoc of furnizoriSnapshot.docs) {
           const furnizorData = furnizorDoc.data();
           const recenziiRef = collection(furnizorDoc.ref, 'recenzii');
           const recenziiSnapshot = await getDocs(recenziiRef);
 
+          // Calculate stats for this furnizor
+          let totalRating = 0;
+          let count = 0;
+
           recenziiSnapshot.forEach((doc) => {
             const rec = doc.data();
+            const rating = typeof rec.rating === 'number' ? rec.rating : 0;
+            totalRating += rating;
+            count++;
+
             allReviews.push({
               id: doc.id,
               furnizorId: furnizorDoc.id,
               nume_furnizor: furnizorData.nume || 'Anonim',
               telefon: furnizorData.telefon || '',
               mesaj: rec.mesaj,
-              rating: typeof rec.rating === 'number' ? rec.rating : 0,
+              rating: rating,
               data: rec.data,
               timestamp: rec.timestamp?.toDate?.() || new Date(rec.data || 0),
             });
           });
+
+          if (count > 0) {
+            stats[furnizorDoc.id] = {
+              totalRating,
+              count,
+              avgRating: totalRating / count,
+            };
+          }
         }
+
+        setFurnizorStats(stats);
 
         // Sort by timestamp descending and take top 5
         allReviews.sort((a, b) => {
@@ -99,7 +127,11 @@ export default function RecentReviews({ refreshTrigger }: RecentReviewsProps) {
           className="animate-in fade-in slide-in-from-bottom-4"
           style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'both' }}
         >
-          <ReviewCard review={review} />
+          <ReviewCard 
+            review={review} 
+            avgRating={review.furnizorId ? furnizorStats[review.furnizorId]?.avgRating : undefined}
+            reviewCount={review.furnizorId ? furnizorStats[review.furnizorId]?.count : undefined}
+          />
         </div>
       ))}
     </div>

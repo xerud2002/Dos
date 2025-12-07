@@ -7,13 +7,19 @@ import { Recenzie } from '@/types';
 
 interface ReviewCardProps {
   review: Recenzie & { nume_furnizor?: string; furnizorId?: string };
+  avgRating?: number;
+  reviewCount?: number;
 }
 
-export default function ReviewCard({ review }: ReviewCardProps) {
-  const rating = Math.round(review.rating);
-  const ratingColor = getRatingColor(review.rating);
-  const iconName = getRatingIconName(review.rating);
-  const ratingLabel = getRatingLabel(review.rating);
+export default function ReviewCard({ review, avgRating, reviewCount }: ReviewCardProps) {
+  // Use avgRating if provided, otherwise fall back to individual review rating
+  const displayRating = avgRating ?? review.rating;
+  // Round to nearest 0.1
+  const roundedRating = Math.round(displayRating * 10) / 10;
+  const rating = Math.round(roundedRating);
+  const ratingColor = getRatingColor(roundedRating);
+  const iconName = getRatingIconName(roundedRating);
+  const ratingLabel = getRatingLabel(roundedRating);
 
   const formattedDate = review.data 
     ? new Date(review.data).toLocaleDateString('ro-RO', {
@@ -61,11 +67,18 @@ export default function ReviewCard({ review }: ReviewCardProps) {
               {ratingLabel}
             </span>
           </div>
-          <div 
-            className="text-xl md:text-2xl font-black"
-            style={{ color: ratingColor }}
-          >
-            {review.rating.toFixed(1)}
+          <div className="text-right">
+            <div 
+              className="text-xl md:text-2xl font-black"
+              style={{ color: ratingColor }}
+            >
+              {roundedRating.toFixed(1)}
+            </div>
+            {reviewCount && reviewCount > 1 && (
+              <div className="text-xs text-slate-400 mt-0.5">
+                {reviewCount} recenzii
+              </div>
+            )}
           </div>
         </div>
         
