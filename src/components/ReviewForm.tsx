@@ -55,13 +55,13 @@ export default function ReviewForm({ onSuccess }: ReviewFormProps) {
   return (
     <form onSubmit={handleSubmit} className="relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
       {/* Decorative gradient corner */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-cyan-400/20 to-emerald-400/20 rounded-bl-full" />
+      <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-sky-400/20 to-violet-400/20 rounded-bl-full" />
       
       <div className="relative space-y-6">
         <div className="grid md:grid-cols-2 gap-6">
           <div className="space-y-2">
             <label htmlFor="nume" className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
-              <span className="flex items-center justify-center w-6 h-6 rounded-lg bg-cyan-100 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400 text-xs">1</span>
+              <span className="flex items-center justify-center w-6 h-6 rounded-lg bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400 text-xs">1</span>
               Nume furnizor / companie
             </label>
             <input
@@ -77,7 +77,7 @@ export default function ReviewForm({ onSuccess }: ReviewFormProps) {
 
           <div className="space-y-2">
             <label htmlFor="telefon" className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
-              <span className="flex items-center justify-center w-6 h-6 rounded-lg bg-cyan-100 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400 text-xs">2</span>
+              <span className="flex items-center justify-center w-6 h-6 rounded-lg bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400 text-xs">2</span>
               Telefon furnizor
             </label>
             <input
@@ -94,7 +94,7 @@ export default function ReviewForm({ onSuccess }: ReviewFormProps) {
 
         <div className="space-y-2">
           <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
-            <span className="flex items-center justify-center w-6 h-6 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 text-xs">3</span>
+            <span className="flex items-center justify-center w-6 h-6 rounded-lg bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 text-xs">3</span>
             Selectează rating
           </label>
           <div className="p-4 bg-slate-50 dark:bg-slate-700/30 rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-600">

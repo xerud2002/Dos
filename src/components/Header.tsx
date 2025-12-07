@@ -18,14 +18,14 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 group">
             <Image
-              src="/logo.png"
+              src="/icons/ico-red.png"
               alt="daiostea.ro logo"
-              width={40}
-              height={40}
-              className="h-9 w-auto transition-transform group-hover:scale-110"
+              width={36}
+              height={36}
+              className="h-9 w-9 transition-transform group-hover:scale-110"
               priority
             />
-            <span className="text-xl font-bold text-slate-800 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
+            <span className="text-xl font-bold text-slate-800 dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
               daiostea.ro
             </span>
           </Link>
@@ -37,7 +37,7 @@ export default function Header() {
               className="relative p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-300 group"
               title={theme === 'light' ? 'Activează modul întunecat' : 'Activează modul luminos'}
             >
-              <div className="absolute inset-0 rounded-xl bg-linear-to-r from-cyan-400 to-emerald-400 opacity-0 group-hover:opacity-20 transition-opacity" />
+              <div className="absolute inset-0 rounded-xl bg-linear-to-r from-sky-400 to-violet-400 opacity-0 group-hover:opacity-20 transition-opacity" />
               <Image
                 src={theme === 'light' ? '/icons/moon.png' : '/icons/sun.png'}
                 alt="Toggle theme"
@@ -56,7 +56,7 @@ export default function Header() {
                     alt="Avatar"
                     width={32}
                     height={32}
-                    className="rounded-full ring-2 ring-cyan-400"
+                    className="rounded-full ring-2 ring-sky-400"
                   />
                   <span className="hidden md:inline text-sm font-medium text-slate-700 dark:text-slate-200 max-w-[150px] truncate">
                     {user.displayName || user.email}

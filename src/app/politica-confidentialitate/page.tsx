@@ -8,7 +8,7 @@ export const metadata = {
 export default function PoliticaConfidentialitate() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold text-cyan-500 mb-8">
+      <h1 className="text-3xl font-bold text-sky-500 mb-8">
         Politica de confidențialitate
       </h1>
 
@@ -91,7 +91,7 @@ export default function PoliticaConfidentialitate() {
       </div>
 
       <div className="mt-12">
-        <Link href="/" className="text-emerald-500 hover:underline">
+        <Link href="/" className="text-violet-500 hover:underline">
           ← Înapoi la pagina principală
         </Link>
       </div>

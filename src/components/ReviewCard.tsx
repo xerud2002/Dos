@@ -44,7 +44,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
         {/* Header with name and rating */}
         <div className="flex items-start justify-between mb-4">
           <div>
-            <h4 className="text-lg font-bold text-slate-800 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
+            <h4 className="text-lg font-bold text-slate-800 dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
               {review.nume_furnizor || 'Anonim'}
             </h4>
             <span 
@@ -100,7 +100,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
             </svg>
             {formattedDate}
           </div>
-          <button className="text-sm text-cyan-500 hover:text-cyan-600 dark:text-cyan-400 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+          <button className="text-sm text-sky-500 hover:text-sky-600 dark:text-sky-400 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
             Vezi profil →
           </button>
         </div>

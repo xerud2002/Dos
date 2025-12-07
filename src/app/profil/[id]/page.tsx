@@ -94,7 +94,7 @@ export default function ProfilPage({ params }: PageProps) {
       <div className="flex flex-col items-center justify-center min-h-[60vh]">
         <div className="relative">
           <div className="w-20 h-20 border-4 border-slate-200 dark:border-slate-700 rounded-full"></div>
-          <div className="w-20 h-20 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
+          <div className="w-20 h-20 border-4 border-sky-500 border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
         </div>
         <p className="mt-6 text-slate-500 dark:text-slate-400 animate-pulse">Se încarcă profilul...</p>
       </div>
@@ -117,7 +117,7 @@ export default function ProfilPage({ params }: PageProps) {
         </p>
         <Link 
           href="/" 
-          className="inline-flex items-center gap-2 bg-linear-to-r from-cyan-500 to-emerald-500 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-cyan-500/25 transition-all"
+          className="inline-flex items-center gap-2 bg-linear-to-r from-sky-500 to-violet-500 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-sky-500/25 transition-all"
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -135,8 +135,8 @@ export default function ProfilPage({ params }: PageProps) {
       {/* Hero Header */}
       <div className="relative bg-linear-to-br from-slate-800 via-slate-900 to-slate-800 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 overflow-hidden">
         <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-0 -left-40 w-80 h-80 bg-cyan-500 rounded-full filter blur-3xl"></div>
-          <div className="absolute bottom-0 -right-40 w-80 h-80 bg-emerald-500 rounded-full filter blur-3xl"></div>
+          <div className="absolute top-0 -left-40 w-80 h-80 bg-sky-500 rounded-full filter blur-3xl"></div>
+          <div className="absolute bottom-0 -right-40 w-80 h-80 bg-violet-500 rounded-full filter blur-3xl"></div>
         </div>
         
         <div className="relative max-w-7xl mx-auto px-4 py-12 md:py-20">
@@ -152,7 +152,7 @@ export default function ProfilPage({ params }: PageProps) {
           
           <div className="flex flex-col md:flex-row md:items-start gap-6">
             {/* Avatar */}
-            <div className="shrink-0 w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-linear-to-br from-cyan-400 to-emerald-400 flex items-center justify-center text-white text-4xl md:text-5xl font-bold shadow-2xl shadow-cyan-500/25">
+            <div className="shrink-0 w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-linear-to-br from-sky-400 to-violet-400 flex items-center justify-center text-white text-4xl md:text-5xl font-bold shadow-2xl shadow-sky-500/25">
               {(furnizor.nume || furnizor.companie || '?')[0].toUpperCase()}
             </div>
             
@@ -163,7 +163,7 @@ export default function ProfilPage({ params }: PageProps) {
                 </h1>
                 <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium ${
                   furnizor.claimed 
-                    ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' 
+                    ? 'bg-violet-500/20 text-violet-400 border border-violet-500/30' 
                     : 'bg-slate-700 text-slate-400 border border-slate-600'
                 }`}>
                   {furnizor.claimed ? (
@@ -230,7 +230,7 @@ export default function ProfilPage({ params }: PageProps) {
             {/* Company Info */}
             <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-700">
               <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-                <svg className="w-5 h-5 text-cyan-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-5 h-5 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
                 Informații companie
@@ -239,32 +239,32 @@ export default function ProfilPage({ params }: PageProps) {
                 {furnizor.telefon && (
                   <a 
                     href={`tel:${furnizor.telefon}`}
-                    className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 hover:bg-cyan-50 dark:hover:bg-slate-700 transition-colors group"
+                    className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 hover:bg-sky-50 dark:hover:bg-slate-700 transition-colors group"
                   >
-                    <div className="w-10 h-10 rounded-full bg-cyan-100 dark:bg-cyan-900/50 flex items-center justify-center text-cyan-600 dark:text-cyan-400">
+                    <div className="w-10 h-10 rounded-full bg-sky-100 dark:bg-sky-900/50 flex items-center justify-center text-sky-600 dark:text-sky-400">
                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                       </svg>
                     </div>
                     <div>
                       <p className="text-xs text-slate-500 dark:text-slate-400">Telefon</p>
-                      <p className="font-medium text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">{furnizor.telefon}</p>
+                      <p className="font-medium text-slate-900 dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">{furnizor.telefon}</p>
                     </div>
                   </a>
                 )}
                 {furnizor.email && (
                   <a 
                     href={`mailto:${furnizor.email}`}
-                    className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 hover:bg-emerald-50 dark:hover:bg-slate-700 transition-colors group"
+                    className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 hover:bg-violet-50 dark:hover:bg-slate-700 transition-colors group"
                   >
-                    <div className="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                    <div className="w-10 h-10 rounded-full bg-violet-100 dark:bg-violet-900/50 flex items-center justify-center text-violet-600 dark:text-violet-400">
                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
                     </div>
                     <div>
                       <p className="text-xs text-slate-500 dark:text-slate-400">Email</p>
-                      <p className="font-medium text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors break-all">{furnizor.email}</p>
+                      <p className="font-medium text-slate-900 dark:text-white group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors break-all">{furnizor.email}</p>
                     </div>
                   </a>
                 )}
@@ -312,7 +312,7 @@ export default function ProfilPage({ params }: PageProps) {
           <div className="lg:col-span-2">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-slate-900 dark:text-white flex items-center gap-2">
-                <svg className="w-6 h-6 text-cyan-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-6 h-6 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
                 Toate recenziile
@@ -350,7 +350,7 @@ export default function ProfilPage({ params }: PageProps) {
         </div>
 
         {/* CTA */}
-        <div className="text-center mt-16 py-12 bg-linear-to-r from-cyan-500/10 via-emerald-500/10 to-cyan-500/10 rounded-3xl">
+        <div className="text-center mt-16 py-12 bg-linear-to-r from-sky-500/10 via-violet-500/10 to-sky-500/10 rounded-3xl">
           <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">
             Ai lucrat cu acest furnizor?
           </h3>
@@ -359,7 +359,7 @@ export default function ProfilPage({ params }: PageProps) {
           </p>
           <Link
             href="/"
-            className="inline-flex items-center gap-2 bg-linear-to-r from-cyan-500 to-emerald-500 hover:from-cyan-600 hover:to-emerald-600 text-white px-8 py-4 rounded-xl font-semibold shadow-lg shadow-cyan-500/25 hover:shadow-xl hover:shadow-cyan-500/30 transition-all hover:-translate-y-0.5"
+            className="inline-flex items-center gap-2 bg-linear-to-r from-sky-500 to-violet-500 hover:from-sky-600 hover:to-violet-600 text-white px-8 py-4 rounded-xl font-semibold shadow-lg shadow-sky-500/25 hover:shadow-xl hover:shadow-sky-500/30 transition-all hover:-translate-y-0.5"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />

@@ -109,7 +109,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
         onClick={(e) => e.stopPropagation()}
       >
         {/* Gradient decoration */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-cyan-500 via-emerald-500 to-cyan-500 rounded-t-2xl" />
+        <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-sky-500 via-violet-500 to-sky-500 rounded-t-2xl" />
         
         <div className="flex justify-between items-center mb-8">
           <div>
@@ -189,7 +189,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full pl-12 pr-4 py-3.5 border-2 border-slate-200 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:border-cyan-400 focus:ring-4 focus:ring-cyan-400/20 transition-all"
+              className="w-full pl-12 pr-4 py-3.5 border-2 border-slate-200 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:border-sky-400 focus:ring-4 focus:ring-sky-400/20 transition-all"
             />
           </div>
           {mode !== 'reset' && (
@@ -205,7 +205,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full pl-12 pr-4 py-3.5 border-2 border-slate-200 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:border-cyan-400 focus:ring-4 focus:ring-cyan-400/20 transition-all"
+                className="w-full pl-12 pr-4 py-3.5 border-2 border-slate-200 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:border-sky-400 focus:ring-4 focus:ring-sky-400/20 transition-all"
               />
             </div>
           )}
@@ -222,7 +222,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-linear-to-r from-cyan-500 to-emerald-500 hover:from-cyan-600 hover:to-emerald-600 text-white py-4 rounded-xl font-semibold shadow-lg shadow-cyan-500/25 hover:shadow-xl hover:shadow-cyan-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full bg-linear-to-r from-sky-500 to-violet-500 hover:from-sky-600 hover:to-violet-600 text-white py-4 rounded-xl font-semibold shadow-lg shadow-sky-500/25 hover:shadow-xl hover:shadow-sky-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {loading ? (
               <>
@@ -241,7 +241,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
             <>
               <p>
                 Nu ai cont?{' '}
-                <button onClick={() => setMode('register')} className="text-cyan-500 hover:text-cyan-600 font-medium hover:underline">
+                <button onClick={() => setMode('register')} className="text-sky-500 hover:text-sky-600 font-medium hover:underline">
                   Înregistrează-te gratuit
                 </button>
               </p>
@@ -255,14 +255,14 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
           {mode === 'register' && (
             <p>
               Ai deja cont?{' '}
-              <button onClick={() => setMode('login')} className="text-cyan-500 hover:text-cyan-600 font-medium hover:underline">
+              <button onClick={() => setMode('login')} className="text-sky-500 hover:text-sky-600 font-medium hover:underline">
                 Autentifică-te
               </button>
             </p>
           )}
           {mode === 'reset' && (
             <p>
-              <button onClick={() => setMode('login')} className="text-cyan-500 hover:text-cyan-600 font-medium hover:underline flex items-center justify-center gap-1 mx-auto">
+              <button onClick={() => setMode('login')} className="text-sky-500 hover:text-sky-600 font-medium hover:underline flex items-center justify-center gap-1 mx-auto">
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>

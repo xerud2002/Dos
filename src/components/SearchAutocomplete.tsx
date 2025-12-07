@@ -86,7 +86,7 @@ export default function SearchAutocomplete() {
     <div ref={wrapperRef} className="relative w-full max-w-2xl mx-auto">
       <div className="relative group">
         {/* Glow effect behind input */}
-        <div className="absolute -inset-1 bg-linear-to-r from-cyan-400 to-emerald-400 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity" />
+        <div className="absolute -inset-1 bg-linear-to-r from-sky-400 to-violet-400 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity" />
         
         <div className="relative flex items-center">
           {/* Search icon */}
@@ -102,17 +102,17 @@ export default function SearchAutocomplete() {
             onChange={(e) => setQuery(e.target.value)}
             onFocus={() => results.length > 0 && setIsOpen(true)}
             placeholder="Caută furnizor după nume, telefon sau email..."
-            className="w-full pl-14 pr-14 py-5 text-lg border-2 border-slate-200 dark:border-slate-600 rounded-full bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:border-cyan-400 focus:ring-4 focus:ring-cyan-400/20 shadow-xl shadow-slate-200/50 dark:shadow-slate-900/50 transition-all"
+            className="w-full pl-14 pr-14 py-5 text-lg border-2 border-slate-200 dark:border-slate-600 rounded-full bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:border-sky-400 focus:ring-4 focus:ring-sky-400/20 shadow-xl shadow-slate-200/50 dark:shadow-slate-900/50 transition-all"
           />
           
           {/* Loading or search button */}
           <div className="absolute right-3">
             {loading ? (
               <div className="w-10 h-10 flex items-center justify-center">
-                <div className="w-6 h-6 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin" />
+                <div className="w-6 h-6 border-2 border-sky-500 border-t-transparent rounded-full animate-spin" />
               </div>
             ) : (
-              <button className="w-10 h-10 flex items-center justify-center bg-linear-to-r from-cyan-500 to-emerald-500 rounded-full text-white hover:shadow-lg hover:scale-105 transition-all">
+              <button className="w-10 h-10 flex items-center justify-center bg-linear-to-r from-sky-500 to-violet-500 rounded-full text-white hover:shadow-lg hover:scale-105 transition-all">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
@@ -134,15 +134,15 @@ export default function SearchAutocomplete() {
             <li
               key={provider.id}
               onClick={() => handleSelect(provider)}
-              className="px-5 py-4 cursor-pointer hover:bg-linear-to-r hover:from-cyan-50 hover:to-emerald-50 dark:hover:from-slate-700 dark:hover:to-slate-700 border-b border-slate-100 dark:border-slate-700 last:border-0 transition-all group/item"
+              className="px-5 py-4 cursor-pointer hover:bg-linear-to-r hover:from-sky-50 hover:to-violet-50 dark:hover:from-slate-700 dark:hover:to-slate-700 border-b border-slate-100 dark:border-slate-700 last:border-0 transition-all group/item"
               style={{ animationDelay: `${index * 50}ms` }}
             >
               <div className="flex items-center gap-4">
-                <div className="shrink-0 w-10 h-10 rounded-full bg-linear-to-br from-cyan-400 to-emerald-400 flex items-center justify-center text-white font-bold">
+                <div className="shrink-0 w-10 h-10 rounded-full bg-linear-to-br from-sky-400 to-violet-400 flex items-center justify-center text-white font-bold">
                   {(provider.nume || provider.companie || '?')[0].toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-slate-800 dark:text-white truncate group-hover/item:text-cyan-600 dark:group-hover/item:text-cyan-400 transition-colors">
+                  <p className="font-semibold text-slate-800 dark:text-white truncate group-hover/item:text-sky-600 dark:group-hover/item:text-sky-400 transition-colors">
                     {provider.nume || provider.companie || provider.telefon || 'Fără nume'}
                   </p>
                   {provider.telefon && (
@@ -154,7 +154,7 @@ export default function SearchAutocomplete() {
                     </p>
                   )}
                 </div>
-                <svg className="w-5 h-5 text-slate-300 dark:text-slate-600 group-hover/item:text-cyan-500 group-hover/item:translate-x-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-5 h-5 text-slate-300 dark:text-slate-600 group-hover/item:text-sky-500 group-hover/item:translate-x-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </div>

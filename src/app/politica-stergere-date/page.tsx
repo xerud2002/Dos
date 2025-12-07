@@ -8,7 +8,7 @@ export const metadata = {
 export default function PoliticaStergereDate() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold text-cyan-500 mb-8">
+      <h1 className="text-3xl font-bold text-sky-500 mb-8">
         Politica de ștergere a datelor
       </h1>
 
@@ -74,11 +74,11 @@ export default function PoliticaStergereDate() {
       </div>
 
       <div className="mt-12 flex gap-4">
-        <Link href="/politica-confidentialitate" className="text-emerald-500 hover:underline">
+        <Link href="/politica-confidentialitate" className="text-violet-500 hover:underline">
           Politica de confidențialitate
         </Link>
         <span className="text-gray-400">|</span>
-        <Link href="/" className="text-emerald-500 hover:underline">
+        <Link href="/" className="text-violet-500 hover:underline">
           ← Înapoi la pagina principală
         </Link>
       </div>
